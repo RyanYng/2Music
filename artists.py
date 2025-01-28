@@ -50,9 +50,11 @@ def get_artist_top_songs(token,artist_id):
     return json_result
 
 token = get_token()
-artist = search_for_artist(token,'Billy Brag')
+artist = search_for_artist(token,'Dusty Springfield')
 artist_id = artist['id']
 songs = get_artist_top_songs(token,artist_id)
 
 for idx,song in enumerate(songs):
-    print(f"{idx + 1} . {song["name"]}")
+    # print('-'*500)
+    print(f"{idx + 1} . {song["name"]} -> {song["track_number"]} song on album {song["album"]["name"]} | released {song["album"]["release_date"]}")
+    # print(song)
