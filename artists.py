@@ -42,14 +42,17 @@ def search_for_artist(token,artist_name):
     return json_result[0]
 
 def get_artist_top_songs(token,artist_id):
-    url = f"https://api.spotify.com/v1/artists/{artist_id}/top-tracks"
+    url = f"https://api.spotify.com/v1/artists/{artist_id}/top-tracks?country=UK"
     headers = get_auth_header(token)
 
     result = get(url, headers = headers)
-    json_result = json.loads(result.content)
-    print(json_result["tracks"])
+    json_result = json.loads(result.content)["tracks"]
+    return json_result
 
 token = get_token()
 artist = search_for_artist(token,'Billy Brag')
 artist_id = artist['id']
-get_artist_top_songs(token,artist_id)
+songs = get_artist_top_songs(token,artist_id)
+
+for idx,song in enumerate(songs):
+    print(f"{idx + 1} . {song["name"]}")
