@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv
 import base64 
 import json 
-from requests import post
+from requests import post,get
 
 load_dotenv()
 client_id = os.getenv("CLIENT_ID")
@@ -27,7 +27,20 @@ def get_token():
 def get_auth_header(token):
     return {"Authorization": "Bearer " + token}
 
+def search_for_artist(token,artist_name):
+    url = "https://api.spotify.com/v1/search"
+    headers = get_auth_header(token)
+    query = f"?q={artist_name}&type=artist&limit=1"
+
+    query_url = url + query
+    result = get(query_url,headers = headers)
+    json_result = json.loads(result.content)["artists"]["items"]
+
+    if len(json_result) == 0:
+        print("No Artist Found")
+        return None
+    return json_result[0]
+
 token = get_token()
-print(token)
-auth_header = get_auth_header(token)
-print(auth_header)
+artist = search_for_artist(token,'Billy Brag')
+print(artist['genres'])
